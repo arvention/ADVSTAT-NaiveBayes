@@ -10,6 +10,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import view.MainFrame;
 import worker.TestDataAdder;
+import worker.TestModelClearer;
+import worker.TestModelLoader;
+import worker.TestModelMerger;
+import worker.TestModelSaver;
 import worker.TrainDataAdder;
 import worker.TrainModelClearer;
 import worker.TrainModelLoader;
@@ -90,7 +94,7 @@ public class OperationController {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				loadTestModel();
 			}
 			
 		});
@@ -99,7 +103,7 @@ public class OperationController {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				saveTestModel();
 			}
 			
 		});
@@ -108,7 +112,7 @@ public class OperationController {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				clearTestModel();
 			}
 			
 		});
@@ -117,7 +121,7 @@ public class OperationController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				mergeTestModel();
 			}
 			
 		});
@@ -296,7 +300,7 @@ public class OperationController {
 			
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				loadTestModel();
 			}
 
 			@Override
@@ -323,7 +327,7 @@ public class OperationController {
 			
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				saveTestModel();
 			}
 
 			@Override
@@ -350,7 +354,7 @@ public class OperationController {
 			
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				clearTestModel();
 			}
 
 			@Override
@@ -376,7 +380,7 @@ public class OperationController {
 		mainFrame.getLabelOperationsMergeTestModels().addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				mergeTestModel();
 			}
 
 			@Override
@@ -518,6 +522,7 @@ public class OperationController {
 	}
 	
 	private void addTestData() {
+		
 		JFileChooser fc = new JFileChooser();
 		fc.addChoosableFileFilter(new FileNameExtensionFilter("Text Files", TEXT_FILES));
 		fc.setAcceptAllFileFilterUsed(false);
@@ -533,6 +538,81 @@ public class OperationController {
 					mainController);
 			testDataAdder.execute();
 		}
+		
+	}
+	
+	private void loadTestModel() {
+		
+		JFileChooser fc = new JFileChooser();
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", CSV_FILES));
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setMultiSelectionEnabled(false);
+		
+		int returnVal = fc.showOpenDialog(mainFrame.getContentPane());
+		
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			
+			TestModelLoader testModelLoader = new TestModelLoader(fc.getSelectedFile().getAbsolutePath(), 
+					mainFrame.getTextAreaStatus(), 
+					mainFrame.getTableTestModel(),
+					mainController);
+			testModelLoader.execute();
+			
+		}
+		
+	}
+	
+	private void saveTestModel() {
+		
+		JFileChooser fc = new JFileChooser();
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", CSV_FILES));
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setMultiSelectionEnabled(false);
+		
+		int returnVal = fc.showSaveDialog(mainFrame.getContentPane());
+		
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			
+			String filepath = fc.getSelectedFile().getAbsolutePath();
+			
+			if(!filepath.endsWith(CSV_FILES[0])) {
+				filepath += "." + CSV_FILES[0];
+			}
+			
+			TestModelSaver testModelSaver = new TestModelSaver(filepath, 
+					mainFrame.getTextAreaStatus(), 
+					mainController);
+			testModelSaver.execute();
+		}
+		
+	}
+	
+	private void clearTestModel() {
+		TestModelClearer testModelClearer = new TestModelClearer(mainFrame.getTextAreaStatus(), 
+				mainFrame.getTableTestModel(),
+				mainController);
+		testModelClearer.execute();
+	}
+	
+	private void mergeTestModel() {
+		
+		JFileChooser fc = new JFileChooser();
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", CSV_FILES));
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setMultiSelectionEnabled(true);
+		
+		int returnVal = fc.showOpenDialog(mainFrame.getContentPane());
+		
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			
+			TestModelMerger testModelMerger = new TestModelMerger(fc.getSelectedFiles(),
+					mainFrame.getTextAreaStatus(), 
+					mainFrame.getTableTestModel(),
+					mainController);
+			testModelMerger.execute();
+			
+		}
+		
 	}
 	
 }

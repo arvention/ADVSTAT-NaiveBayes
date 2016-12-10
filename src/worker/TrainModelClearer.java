@@ -58,7 +58,7 @@ public class TrainModelClearer extends SwingWorker<Map<WordModel, Integer>, Stri
 		
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		tableModel.setRowCount(0);
-
+		/*
 		int lenKey = mainController.getBagOfWordsModel().keySet().size();
 
 		for (int j = 0; j < lenKey; j++) {
@@ -69,7 +69,7 @@ public class TrainModelClearer extends SwingWorker<Map<WordModel, Integer>, Stri
 					mainController.getBagOfWordsModel().values().toArray()[j] });
 
 		}
-
+		*/
 		table.repaint();
 		table.revalidate();
 		

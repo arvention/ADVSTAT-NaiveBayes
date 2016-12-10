@@ -12,48 +12,51 @@ import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 import controller.MainController;
+import fileio.CSVIO;
 import fileio.TextReader;
 import model.FileModel;
 import model.WordModel;
 import process.TallyMaker;
 
-public class TestDataAdder extends SwingWorker<ArrayList<FileModel>, String> {
+public class TestModelLoader extends SwingWorker<ArrayList<FileModel>, String> {
 	
-	private File[] files;
+	private String filepath;
 	private JTextArea textArea;
 	private JTable table;
 	private MainController mainController;
-
-	public TestDataAdder(File[] files, 
+	
+	public TestModelLoader(String filepath, 
 			JTextArea textArea, 
 			JTable table, 
 			MainController mainController) {
 		
-		this.files = files;
+		this.filepath = filepath;
 		this.textArea = textArea;
 		this.table = table;
 		this.mainController = mainController;
-		
 	}
 	
 	@Override
 	protected ArrayList<FileModel> doInBackground() throws Exception {
 		
 		ArrayList<FileModel> testFiles = new ArrayList<FileModel>();
+		ArrayList<String> testFilenames = CSVIO.read(filepath);
 		
-		for(File file : files) {
+		publish("\nLoading Test Model from " + filepath.substring(filepath.lastIndexOf("\\") + 1));
+		
+		for(String testFilename : testFilenames) {
 			
-			ArrayList<String> texts = TextReader.read(file.getAbsolutePath());
+			File file = new File(testFilename);
 			
 			String tag = new String("Not Spam");
 			if(file.getName().contains("spmsg")) {
 				tag = "Spam";
 			}
-			
+			ArrayList<String> texts = TextReader.read(file.getAbsolutePath());
 			Map<WordModel, Integer> tally = TallyMaker.makeTally(texts, tag);
+			
 			testFiles.add(new FileModel(file, tag, tally));
 			
-			publish(file.getName());
 		}
 		
 		return testFiles;
@@ -61,23 +64,18 @@ public class TestDataAdder extends SwingWorker<ArrayList<FileModel>, String> {
 	
 	@Override
 	protected void process(List<String> chunks) {
-		
 		for (String chunk : chunks) {
-			textArea.append("\nAdding " + chunk + " to Test Data");
+			textArea.append(chunk);
 		}
 		textArea.repaint();
 		textArea.revalidate();
-		
 	}
 	
+	@Override
 	protected void done() {
 		
-		textArea.append("\nFinished adding to Test Data.\n");
-		textArea.repaint();
-		textArea.revalidate();
-		
 		try {
-			mainController.addTestFiles(get());
+			mainController.setTestFiles(get());
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
@@ -92,6 +90,10 @@ public class TestDataAdder extends SwingWorker<ArrayList<FileModel>, String> {
 		table.repaint();
 		table.revalidate();
 		
+		textArea.append("\nTest Model loaded from " + filepath.substring(filepath.lastIndexOf("\\") + 1) + " with " + mainController.getTestFiles().size() + " files.\n");
+		textArea.repaint();
+		textArea.revalidate();
+		
 	}
-
+	
 }

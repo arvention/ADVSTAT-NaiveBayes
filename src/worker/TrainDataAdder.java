@@ -80,7 +80,7 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 	@Override
 	protected void done() {
 		
-		textArea.append("\nFinished adding Train Data.\n");
+		textArea.append("\nFinished adding to Train Data.\n");
 		textArea.repaint();
 		textArea.revalidate();
 		

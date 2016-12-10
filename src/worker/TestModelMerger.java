@@ -12,21 +12,22 @@ import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 import controller.MainController;
+import fileio.CSVIO;
 import fileio.TextReader;
 import model.FileModel;
 import model.WordModel;
 import process.TallyMaker;
 
-public class TestDataAdder extends SwingWorker<ArrayList<FileModel>, String> {
+public class TestModelMerger extends SwingWorker<ArrayList<FileModel>, String> {
 	
 	private File[] files;
 	private JTextArea textArea;
 	private JTable table;
 	private MainController mainController;
-
-	public TestDataAdder(File[] files, 
-			JTextArea textArea, 
-			JTable table, 
+	
+	public TestModelMerger(File[] files,
+			JTextArea textArea,
+			JTable table,
 			MainController mainController) {
 		
 		this.files = files;
@@ -43,41 +44,46 @@ public class TestDataAdder extends SwingWorker<ArrayList<FileModel>, String> {
 		
 		for(File file : files) {
 			
-			ArrayList<String> texts = TextReader.read(file.getAbsolutePath());
+			publish("\nMerging " + file.getName());
 			
-			String tag = new String("Not Spam");
-			if(file.getName().contains("spmsg")) {
-				tag = "Spam";
+			ArrayList<String> testFilenames = CSVIO.read(file.getAbsolutePath());
+			
+			for(String testFilename : testFilenames) {
+				
+				File fileTemp = new File(testFilename);
+				
+				String tag = new String("Not Spam");
+				if(fileTemp.getName().contains("spmsg")) {
+					tag = "Spam";
+				}
+				
+				ArrayList<String> texts = TextReader.read(fileTemp.getAbsolutePath());
+				Map<WordModel, Integer> tally = TallyMaker.makeTally(texts, tag);
+				
+				testFiles.add(new FileModel(fileTemp, tag, tally));
+				
 			}
 			
-			Map<WordModel, Integer> tally = TallyMaker.makeTally(texts, tag);
-			testFiles.add(new FileModel(file, tag, tally));
-			
-			publish(file.getName());
 		}
 		
 		return testFiles;
+		
 	}
 	
 	@Override
 	protected void process(List<String> chunks) {
-		
 		for (String chunk : chunks) {
-			textArea.append("\nAdding " + chunk + " to Test Data");
+			textArea.append(chunk);
 		}
 		textArea.repaint();
 		textArea.revalidate();
-		
 	}
 	
+	@Override
 	protected void done() {
 		
-		textArea.append("\nFinished adding to Test Data.\n");
-		textArea.repaint();
-		textArea.revalidate();
-		
 		try {
-			mainController.addTestFiles(get());
+			mainController.setTestFiles(get());
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
@@ -92,6 +98,10 @@ public class TestDataAdder extends SwingWorker<ArrayList<FileModel>, String> {
 		table.repaint();
 		table.revalidate();
 		
+		textArea.append("\nTest Model merged.\n");
+		textArea.repaint();
+		textArea.revalidate();
+		
 	}
-
+	
 }

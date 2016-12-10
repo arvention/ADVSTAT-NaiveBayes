@@ -39,15 +39,19 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 	protected Map<WordModel, Integer> doInBackground() throws Exception {
 		Map<WordModel, Integer> tally = new HashMap<WordModel, Integer>();
 		
+		mainController.setSpamTrainCount(0);
+		mainController.setNotSpamTrainCount(0);
+		
 		for(File file : files) {
 			
 			publish("\nMerging " + file.getName());
 			
 			ArrayList<String> input = CSVIO.read(file.getAbsolutePath());
+			int len = input.size();
 			
-			for(String string : input) {
+			for(int i = 0; i < len - 1; i++) {
 				
-				String[] temp = string.split(",");
+				String[] temp = input.get(i).split(",");
 				WordModel word = new WordModel(temp[0], temp[1]);
 				
 				if(!tally.containsKey(word)) {
@@ -57,7 +61,14 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 				}
 			}
 			
+			String[] temp = input.get(len - 1).split(",");
+			mainController.setSpamTrainCount(mainController.getSpamTrainCount() + Integer.parseInt(temp[1]));
+			mainController.setNotSpamTrainCount(mainController.getNotSpamTrainCount() + Integer.parseInt(temp[2]));
+			
 		}
+		
+		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
+		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
 		
 		return tally;
 	}

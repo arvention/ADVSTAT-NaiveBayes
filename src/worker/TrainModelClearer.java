@@ -32,6 +32,11 @@ public class TrainModelClearer extends SwingWorker<Map<WordModel, Integer>, Stri
 		
 		publish("\nClearing Train Model.");
 		
+		mainController.setSpamTrainCount(0);
+		mainController.setNotSpamTrainCount(0);
+		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
+		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		
 		return new HashMap<WordModel, Integer>();
 	}
 	

@@ -80,7 +80,7 @@ public class OperationController {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				addTestData();
 			}
 			
 		});
@@ -268,7 +268,7 @@ public class OperationController {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				addTestData();
 			}
 
 			@Override
@@ -514,6 +514,19 @@ public class OperationController {
 			
 		}
 		
+	}
+	
+	private void addTestData() {
+		JFileChooser fc = new JFileChooser();
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("Text Files", TEXT_FILES));
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setMultiSelectionEnabled(true);
+		
+		int returnVal = fc.showOpenDialog(mainFrame.getContentPane());
+
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			
+		}
 	}
 	
 }

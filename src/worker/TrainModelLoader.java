@@ -40,13 +40,20 @@ public class TrainModelLoader extends SwingWorker<Map<WordModel, Integer>, Strin
 		ArrayList<String> input = CSVIO.read(filepath);
 		
 		publish("\nLoading Train Model from " + filepath.substring(filepath.lastIndexOf("\\") + 1));
+		int len = input.size();
 		
-		for(String string : input) {
+		for(int i = 0; i < len - 1; i++) {
 			
-			String[] temp = string.split(",");
+			String[] temp = input.get(i).split(",");
 			bagOfWordsModel.put(new WordModel(temp[0], temp[1]), Integer.parseInt(temp[2]));
 			
 		}
+		
+		String[] temp = input.get(len - 1).split(",");
+		mainController.setSpamTrainCount(Integer.parseInt(temp[1]));
+		mainController.setNotSpamTrainCount(Integer.parseInt(temp[2]));
+		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
+		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
 		
 		return bagOfWordsModel;
 	}

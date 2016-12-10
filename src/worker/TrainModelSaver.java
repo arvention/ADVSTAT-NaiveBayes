@@ -37,8 +37,11 @@ public class TrainModelSaver extends SwingWorker<Void, String> {
 		for(WordModel word : trainModelMap.keySet()) {
 			output.add(word.getWord() + "," + word.getTag() + "," + trainModelMap.get(word));
 		}
-		
+		output.add("DOCCOUNT," + mainController.getSpamTrainCount() + "," + mainController.getNotSpamTrainCount());
 		CSVIO.write(output, filepath);
+		
+		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
+		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
 		
 		return null;
 	}

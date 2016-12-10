@@ -37,6 +37,9 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 	@Override
 	protected Map<WordModel, Integer> doInBackground() throws Exception {
 		Map<WordModel, Integer> tally = new HashMap<WordModel, Integer>();
+		int spamTrainCount = 0;
+		int notSpamTrainCount = 0;
+		
 		int len = files.length;
 		for (int i = 0; i < len; i++) {
 			ArrayList<String> texts = TextReader.read(files[i].getAbsolutePath());
@@ -44,6 +47,9 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 			String tag = new String("Not Spam");
 			if(files[i].getName().contains("spmsg")) {
 				tag = "Spam";
+				spamTrainCount++;
+			} else {
+				notSpamTrainCount++;
 			}
 			for (String text : texts) {
 				String s = text.replaceAll("[^a-zA-Z\\s]", "").replaceAll("\\s+", " ");
@@ -64,6 +70,12 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 			}
 			publish(files[i].getName());
 		}
+		
+		mainController.setSpamTrainCount(spamTrainCount);
+		mainController.setNotSpamTrainCount(notSpamTrainCount);
+		
+		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
+		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
 
 		return tally;
 	}

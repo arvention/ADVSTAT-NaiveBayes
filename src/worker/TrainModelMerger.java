@@ -13,8 +13,10 @@ import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 import controller.MainController;
+import fileio.CSVIO;
 import model.WordModel;
-import process.CSVIO;
+import process.TallyMerger;
+import process.TallyRetriever;
 
 public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, String> {
 	
@@ -37,7 +39,8 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 	
 	@Override
 	protected Map<WordModel, Integer> doInBackground() throws Exception {
-		Map<WordModel, Integer> tally = new HashMap<WordModel, Integer>();
+		
+		Map<WordModel, Integer> tallyFinal = new HashMap<WordModel, Integer>();
 		
 		mainController.setSpamTrainCount(0);
 		mainController.setNotSpamTrainCount(0);
@@ -49,28 +52,17 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 			ArrayList<String> input = CSVIO.read(file.getAbsolutePath());
 			int len = input.size();
 			
-			for(int i = 0; i < len - 1; i++) {
-				
-				String[] temp = input.get(i).split(",");
-				WordModel word = new WordModel(temp[0], temp[1]);
-				
-				if(!tally.containsKey(word)) {
-					tally.put(word, Integer.parseInt(temp[2]));
-				} else {
-					tally.replace(word, tally.get(word), tally.get(word) + Integer.parseInt(temp[2]));
-				}
-			}
-			
-			String[] temp = input.get(len - 1).split(",");
+			String[] temp = input.remove(len - 1).split(",");
 			mainController.setSpamTrainCount(mainController.getSpamTrainCount() + Integer.parseInt(temp[1]));
 			mainController.setNotSpamTrainCount(mainController.getNotSpamTrainCount() + Integer.parseInt(temp[2]));
 			
+			Map<WordModel, Integer> tally = TallyRetriever.retrieveTally(input);
+			tallyFinal = TallyMerger.mergeTally(tallyFinal, tally);
+			
 		}
 		
-		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
-		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		return tallyFinal;
 		
-		return tally;
 	}
 	
 	@Override
@@ -111,6 +103,10 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 		textArea.append("\nTrain Model merged.\n");
 		textArea.repaint();
 		textArea.revalidate();
+		
+		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
+		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		
 	}
 	
 }

@@ -2,9 +2,11 @@ package controller;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.FileModel;
 import model.WordModel;
 import view.MainFrame;
 
@@ -21,12 +23,16 @@ public class MainController {
 	private Map<WordModel, Integer> bagOfWordsModel;
 	private int spamTrainCount;
 	private int notSpamTrainCount;
+	
+	private ArrayList<FileModel> testFiles;
 
 	public MainController(MainFrame mainFrame) {
 		bagOfWordsModel = new HashMap<WordModel, Integer>();
 		spamTrainCount = 0;
 		notSpamTrainCount = 0;
-
+		
+		testFiles = new ArrayList<FileModel>();
+		
 		this.mainFrame = mainFrame;
 		mainFrame.setVisible(true);
 	}
@@ -57,6 +63,20 @@ public class MainController {
 
 	public void setNotSpamTrainCount(int notSpamTrainCount) {
 		this.notSpamTrainCount = notSpamTrainCount;
+	}
+	
+	public ArrayList<FileModel> getTestFiles() {
+		return testFiles;
+	}
+	
+	public void addTestFiles(ArrayList<FileModel> testFiles) {
+		for (FileModel testFile : testFiles) {
+			this.testFiles.add(testFile);
+		}
+	}
+	
+	public void setTestFiles(ArrayList<FileModel> testFiles) {
+		this.testFiles = testFiles;
 	}
 
 }

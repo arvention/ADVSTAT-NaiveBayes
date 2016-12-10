@@ -8,8 +8,8 @@ import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
 import controller.MainController;
+import fileio.CSVIO;
 import model.WordModel;
-import process.CSVIO;
 
 public class TrainModelSaver extends SwingWorker<Void, String> {
 
@@ -40,25 +40,29 @@ public class TrainModelSaver extends SwingWorker<Void, String> {
 		output.add("DOCCOUNT," + mainController.getSpamTrainCount() + "," + mainController.getNotSpamTrainCount());
 		CSVIO.write(output, filepath);
 		
-		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
-		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
-		
 		return null;
 	}
 	
 	@Override
 	protected void process(List<String> chunks) {
+		
 		for (String chunk : chunks) {
 			textArea.append(chunk);
 		}
 		textArea.repaint();
 		textArea.revalidate();
+		
 	}
 	
 	@Override
 	protected void done() {
+		
 		textArea.append("\nTrain Model saved as " + filepath.substring(filepath.lastIndexOf("\\") + 1) + "\n");
 		textArea.repaint();
 		textArea.revalidate();
+		
+		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
+		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		
 	}
 }

@@ -9,6 +9,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import view.MainFrame;
+import worker.TestDataAdder;
 import worker.TrainDataAdder;
 import worker.TrainModelClearer;
 import worker.TrainModelLoader;
@@ -526,6 +527,11 @@ public class OperationController {
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			
+			TestDataAdder testDataAdder = new TestDataAdder(fc.getSelectedFiles(),
+					mainFrame.getTextAreaStatus(), 
+					mainFrame.getTableTestModel(),
+					mainController);
+			testDataAdder.execute();
 		}
 	}
 	

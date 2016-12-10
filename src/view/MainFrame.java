@@ -242,16 +242,6 @@ public class MainFrame extends JFrame {
 		gbc_labelOperationsAddTrainData.gridy = 0;
 		panelOperationsList.add(labelOperationsAddTrainData, gbc_labelOperationsAddTrainData);
 		
-		labelOperationsAddTestData = new JLabel("Add Test Data");
-		labelOperationsAddTestData.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(169, 169, 169)));
-		labelOperationsAddTestData.setFont(new Font("Roboto Slab", Font.PLAIN, 13));
-		GridBagConstraints gbc_labelOperationsAddTestData = new GridBagConstraints();
-		gbc_labelOperationsAddTestData.fill = GridBagConstraints.HORIZONTAL;
-		gbc_labelOperationsAddTestData.insets = new Insets(0, 0, 5, 0);
-		gbc_labelOperationsAddTestData.gridx = 0;
-		gbc_labelOperationsAddTestData.gridy = 1;
-		panelOperationsList.add(labelOperationsAddTestData, gbc_labelOperationsAddTestData);
-		
 		labelOperationsLoadTrainModel = new JLabel("Load Train Model");
 		labelOperationsLoadTrainModel.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(169, 169, 169)));
 		labelOperationsLoadTrainModel.setFont(new Font("Roboto Slab", Font.PLAIN, 13));
@@ -259,7 +249,7 @@ public class MainFrame extends JFrame {
 		gbc_labelOperationsLoadTrainModel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_labelOperationsLoadTrainModel.insets = new Insets(0, 0, 5, 0);
 		gbc_labelOperationsLoadTrainModel.gridx = 0;
-		gbc_labelOperationsLoadTrainModel.gridy = 2;
+		gbc_labelOperationsLoadTrainModel.gridy = 1;
 		panelOperationsList.add(labelOperationsLoadTrainModel, gbc_labelOperationsLoadTrainModel);
 		
 		labelOperationsSaveTrainModel = new JLabel("Save Train Model");
@@ -269,8 +259,38 @@ public class MainFrame extends JFrame {
 		gbc_labelOperationsSaveTrainModel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_labelOperationsSaveTrainModel.insets = new Insets(0, 0, 5, 0);
 		gbc_labelOperationsSaveTrainModel.gridx = 0;
-		gbc_labelOperationsSaveTrainModel.gridy = 3;
+		gbc_labelOperationsSaveTrainModel.gridy = 2;
 		panelOperationsList.add(labelOperationsSaveTrainModel, gbc_labelOperationsSaveTrainModel);
+		
+		labelOperationsClearTrainModel = new JLabel("Clear Train Model");
+		labelOperationsClearTrainModel.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(169, 169, 169)));
+		labelOperationsClearTrainModel.setFont(new Font("Roboto Slab", Font.PLAIN, 13));
+		GridBagConstraints gbc_labelOperationsClearTrainModel = new GridBagConstraints();
+		gbc_labelOperationsClearTrainModel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_labelOperationsClearTrainModel.insets = new Insets(0, 0, 5, 0);
+		gbc_labelOperationsClearTrainModel.gridx = 0;
+		gbc_labelOperationsClearTrainModel.gridy = 3;
+		panelOperationsList.add(labelOperationsClearTrainModel, gbc_labelOperationsClearTrainModel);
+		
+		labelOperationsMergeTrainModels = new JLabel("Merge Train Models");
+		labelOperationsMergeTrainModels.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(169, 169, 169)));
+		labelOperationsMergeTrainModels.setFont(new Font("Roboto Slab", Font.PLAIN, 13));
+		GridBagConstraints gbc_labelOperationsMergeTrainModels = new GridBagConstraints();
+		gbc_labelOperationsMergeTrainModels.fill = GridBagConstraints.HORIZONTAL;
+		gbc_labelOperationsMergeTrainModels.insets = new Insets(0, 0, 5, 0);
+		gbc_labelOperationsMergeTrainModels.gridx = 0;
+		gbc_labelOperationsMergeTrainModels.gridy = 4;
+		panelOperationsList.add(labelOperationsMergeTrainModels, gbc_labelOperationsMergeTrainModels);
+		
+		labelOperationsAddTestData = new JLabel("Add Test Data");
+		labelOperationsAddTestData.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(169, 169, 169)));
+		labelOperationsAddTestData.setFont(new Font("Roboto Slab", Font.PLAIN, 13));
+		GridBagConstraints gbc_labelOperationsAddTestData = new GridBagConstraints();
+		gbc_labelOperationsAddTestData.fill = GridBagConstraints.HORIZONTAL;
+		gbc_labelOperationsAddTestData.insets = new Insets(0, 0, 5, 0);
+		gbc_labelOperationsAddTestData.gridx = 0;
+		gbc_labelOperationsAddTestData.gridy = 5;
+		panelOperationsList.add(labelOperationsAddTestData, gbc_labelOperationsAddTestData);
 		
 		labelOperationsLoadTestModel = new JLabel("Load Test Model");
 		labelOperationsLoadTestModel.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(169, 169, 169)));
@@ -279,7 +299,7 @@ public class MainFrame extends JFrame {
 		gbc_labelOperationsLoadTestModel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_labelOperationsLoadTestModel.insets = new Insets(0, 0, 5, 0);
 		gbc_labelOperationsLoadTestModel.gridx = 0;
-		gbc_labelOperationsLoadTestModel.gridy = 4;
+		gbc_labelOperationsLoadTestModel.gridy = 6;
 		panelOperationsList.add(labelOperationsLoadTestModel, gbc_labelOperationsLoadTestModel);
 		
 		labelOperationsSaveTestModel = new JLabel("Save Test Model");
@@ -289,18 +309,8 @@ public class MainFrame extends JFrame {
 		gbc_labelOperationsSaveTestModel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_labelOperationsSaveTestModel.insets = new Insets(0, 0, 5, 0);
 		gbc_labelOperationsSaveTestModel.gridx = 0;
-		gbc_labelOperationsSaveTestModel.gridy = 5;
+		gbc_labelOperationsSaveTestModel.gridy = 7;
 		panelOperationsList.add(labelOperationsSaveTestModel, gbc_labelOperationsSaveTestModel);
-		
-		labelOperationsClearTrainModel = new JLabel("Clear Train Model");
-		labelOperationsClearTrainModel.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(169, 169, 169)));
-		labelOperationsClearTrainModel.setFont(new Font("Roboto Slab", Font.PLAIN, 13));
-		GridBagConstraints gbc_labelOperationsClearTrainModel = new GridBagConstraints();
-		gbc_labelOperationsClearTrainModel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_labelOperationsClearTrainModel.insets = new Insets(0, 0, 5, 0);
-		gbc_labelOperationsClearTrainModel.gridx = 0;
-		gbc_labelOperationsClearTrainModel.gridy = 6;
-		panelOperationsList.add(labelOperationsClearTrainModel, gbc_labelOperationsClearTrainModel);
 		
 		labelOperationsClearTestModel = new JLabel("Clear Test Model");
 		labelOperationsClearTestModel.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(169, 169, 169)));
@@ -309,18 +319,8 @@ public class MainFrame extends JFrame {
 		gbc_labelOperationsClearTestModel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_labelOperationsClearTestModel.insets = new Insets(0, 0, 5, 0);
 		gbc_labelOperationsClearTestModel.gridx = 0;
-		gbc_labelOperationsClearTestModel.gridy = 7;
+		gbc_labelOperationsClearTestModel.gridy = 8;
 		panelOperationsList.add(labelOperationsClearTestModel, gbc_labelOperationsClearTestModel);
-		
-		labelOperationsMergeTrainModels = new JLabel("Merge Train Models");
-		labelOperationsMergeTrainModels.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(169, 169, 169)));
-		labelOperationsMergeTrainModels.setFont(new Font("Roboto Slab", Font.PLAIN, 13));
-		GridBagConstraints gbc_labelOperationsMergeTrainModels = new GridBagConstraints();
-		gbc_labelOperationsMergeTrainModels.fill = GridBagConstraints.HORIZONTAL;
-		gbc_labelOperationsMergeTrainModels.insets = new Insets(0, 0, 5, 0);
-		gbc_labelOperationsMergeTrainModels.gridx = 0;
-		gbc_labelOperationsMergeTrainModels.gridy = 8;
-		panelOperationsList.add(labelOperationsMergeTrainModels, gbc_labelOperationsMergeTrainModels);
 		
 		labelOperationsMergeTestModels = new JLabel("Merge Test Models");
 		labelOperationsMergeTestModels.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(169, 169, 169)));
@@ -457,6 +457,8 @@ public class MainFrame extends JFrame {
 		panelStatus.add(scrollPaneStatus, gbc_scrollPaneStatus);
 		
 		textAreaStatus = new JTextArea();
+		textAreaStatus.setWrapStyleWord(true);
+		textAreaStatus.setLineWrap(true);
 		textAreaStatus.setBorder(null);
 		scrollPaneStatus.setViewportView(textAreaStatus);
 		
@@ -583,10 +585,10 @@ public class MainFrame extends JFrame {
 		tableTestModel.setAutoCreateRowSorter(true);
 		tableTestModel.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null},
+				{null},
 			},
 			new String[] {
-				"Word", "Tag", "Count"
+				"File Name"
 			}
 		));
 		tableTestModel.setFillsViewportHeight(true);

@@ -34,4 +34,8 @@ public class MainController {
 		return bagOfWordsModel;
 	}
 	
+	public void setBagOfWordsModel(Map<WordModel, Integer> bagOfWordsModel) {
+		this.bagOfWordsModel = bagOfWordsModel;
+	}
+	
 }

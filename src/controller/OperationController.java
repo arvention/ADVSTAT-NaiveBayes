@@ -9,12 +9,16 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import view.MainFrame;
-import worker.StatusUpdater;
+import worker.TrainDataAdder;
+import worker.TrainModelClearer;
+import worker.TrainModelLoader;
+import worker.TrainModelMerger;
+import worker.TrainModelSaver;
 
 public class OperationController {
 	
 	private final String[] TEXT_FILES = new String[] { "txt" };
-	//private final String[] CSV_FILES = new String[] { "csv" };
+	private final String[] CSV_FILES = new String[] { "csv" };
 	private final MainFrame mainFrame;
 	private final MainController mainController;
 	
@@ -31,16 +35,7 @@ public class OperationController {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-			}
-			
-		});
-		
-		mainFrame.getMenuItemAddTestData().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				
+				addTrainData();
 			}
 			
 		});
@@ -49,7 +44,7 @@ public class OperationController {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				loadTrainModel();
 			}
 			
 		});
@@ -58,7 +53,7 @@ public class OperationController {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				saveTrainModel();
 			}
 			
 		});
@@ -67,7 +62,7 @@ public class OperationController {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				clearTrainModel();
 			}
 			
 		});
@@ -76,6 +71,15 @@ public class OperationController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				mergeTrainModels();
+			}
+			
+		});
+		
+		mainFrame.getMenuItemAddTestData().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
 				
 			}
 			
@@ -154,38 +158,11 @@ public class OperationController {
 			
 		});
 		
-		mainFrame.getLabelOperationsAddTestData().addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				mainFrame.getLabelOperationsAddTestData().setForeground(MainController.COLOR_SELECTED);
-				mainFrame.getLabelOperationsAddTestData().setCursor(MainController.CURSOR_SELECTED);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				mainFrame.getLabelOperationsAddTestData().setForeground(MainController.COLOR_INACTIVE);
-				mainFrame.getLabelOperationsAddTestData().setCursor(MainController.CURSOR_INACTIVE);
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {}
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-			
-		});
-		
 		mainFrame.getLabelOperationsLoadTrainModel().addMouseListener(new MouseListener() {
 			
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				loadTrainModel();
 			}
 
 			@Override
@@ -212,7 +189,7 @@ public class OperationController {
 			
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				saveTrainModel();
 			}
 
 			@Override
@@ -225,6 +202,85 @@ public class OperationController {
 			public void mouseExited(MouseEvent arg0) {
 				mainFrame.getLabelOperationsSaveTrainModel().setForeground(MainController.COLOR_INACTIVE);
 				mainFrame.getLabelOperationsSaveTrainModel().setCursor(MainController.CURSOR_INACTIVE);
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			
+		});
+		
+		mainFrame.getLabelOperationsClearTrainModel().addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				clearTrainModel();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				mainFrame.getLabelOperationsClearTrainModel().setForeground(MainController.COLOR_SELECTED);
+				mainFrame.getLabelOperationsClearTrainModel().setCursor(MainController.CURSOR_SELECTED);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				mainFrame.getLabelOperationsClearTrainModel().setForeground(MainController.COLOR_INACTIVE);
+				mainFrame.getLabelOperationsClearTrainModel().setCursor(MainController.CURSOR_INACTIVE);
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			
+		});
+		
+		mainFrame.getLabelOperationsMergeTrainModels().addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				mergeTrainModels();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				mainFrame.getLabelOperationsMergeTrainModels().setForeground(MainController.COLOR_SELECTED);
+				mainFrame.getLabelOperationsMergeTrainModels().setCursor(MainController.CURSOR_SELECTED);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				mainFrame.getLabelOperationsMergeTrainModels().setForeground(MainController.COLOR_INACTIVE);
+				mainFrame.getLabelOperationsMergeTrainModels().setCursor(MainController.CURSOR_INACTIVE);
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+		
+		mainFrame.getLabelOperationsAddTestData().addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				mainFrame.getLabelOperationsAddTestData().setForeground(MainController.COLOR_SELECTED);
+				mainFrame.getLabelOperationsAddTestData().setCursor(MainController.CURSOR_SELECTED);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				mainFrame.getLabelOperationsAddTestData().setForeground(MainController.COLOR_INACTIVE);
+				mainFrame.getLabelOperationsAddTestData().setCursor(MainController.CURSOR_INACTIVE);
 			}
 
 			@Override
@@ -289,33 +345,6 @@ public class OperationController {
 			
 		});
 		
-		mainFrame.getLabelOperationsClearTrainModel().addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				mainFrame.getLabelOperationsClearTrainModel().setForeground(MainController.COLOR_SELECTED);
-				mainFrame.getLabelOperationsClearTrainModel().setCursor(MainController.CURSOR_SELECTED);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				mainFrame.getLabelOperationsClearTrainModel().setForeground(MainController.COLOR_INACTIVE);
-				mainFrame.getLabelOperationsClearTrainModel().setCursor(MainController.CURSOR_INACTIVE);
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {}
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-			
-		});
-		
 		mainFrame.getLabelOperationsClearTestModel().addMouseListener(new MouseListener() {
 			
 			@Override
@@ -341,31 +370,6 @@ public class OperationController {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {}
 			
-		});
-		
-		mainFrame.getLabelOperationsMergeTrainModels().addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				mainFrame.getLabelOperationsMergeTrainModels().setForeground(MainController.COLOR_SELECTED);
-				mainFrame.getLabelOperationsMergeTrainModels().setCursor(MainController.CURSOR_SELECTED);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				mainFrame.getLabelOperationsMergeTrainModels().setForeground(MainController.COLOR_INACTIVE);
-				mainFrame.getLabelOperationsMergeTrainModels().setCursor(MainController.CURSOR_INACTIVE);
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {}
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
 		});
 		
 		mainFrame.getLabelOperationsMergeTestModels().addMouseListener(new MouseListener() {
@@ -426,15 +430,90 @@ public class OperationController {
 		fc.addChoosableFileFilter(new FileNameExtensionFilter("Text Files", TEXT_FILES));
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setMultiSelectionEnabled(true);
+		
 		int returnVal = fc.showOpenDialog(mainFrame.getContentPane());
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			StatusUpdater statusUpdater = new StatusUpdater(fc.getSelectedFiles(),
+			
+			TrainDataAdder trainDataAdder = new TrainDataAdder(fc.getSelectedFiles(),
 					mainFrame.getTextAreaStatus(), 
 					mainFrame.getTableTrainModel(),
 					mainController);
-			statusUpdater.execute();
+			trainDataAdder.execute();
+			
 		}
+		
+	}
+	
+	private void loadTrainModel() {
+		JFileChooser fc = new JFileChooser();
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", CSV_FILES));
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setMultiSelectionEnabled(false);
+		
+		int returnVal = fc.showOpenDialog(mainFrame.getContentPane());
+
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			
+			TrainModelLoader trainModelLoader = new TrainModelLoader(fc.getSelectedFile().getAbsolutePath(), 
+					mainFrame.getTextAreaStatus(), 
+					mainFrame.getTableTrainModel(),
+					mainController);
+			trainModelLoader.execute();
+			
+		}
+		
+	}
+	
+	private void saveTrainModel() {
+		JFileChooser fc = new JFileChooser();
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", CSV_FILES));
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setMultiSelectionEnabled(false);
+		
+		int returnVal = fc.showSaveDialog(mainFrame.getContentPane());
+		
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			
+			String filepath = fc.getSelectedFile().getAbsolutePath();
+			
+			if(!filepath.endsWith(CSV_FILES[0])) {
+				filepath += "." + CSV_FILES[0];
+			}
+			
+			TrainModelSaver trainModelSaver = new TrainModelSaver(filepath, 
+					mainFrame.getTextAreaStatus(), 
+					mainController);
+			trainModelSaver.execute();
+		}
+		
+	}
+	
+	private void clearTrainModel() {
+		TrainModelClearer trainModelClearer = new TrainModelClearer(mainFrame.getTextAreaStatus(), 
+				mainFrame.getTableTrainModel(),
+				mainController);
+		trainModelClearer.execute();
+	}
+	
+	private void mergeTrainModels() {
+		JFileChooser fc = new JFileChooser();
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", CSV_FILES));
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setMultiSelectionEnabled(true);
+		
+		int returnVal = fc.showOpenDialog(mainFrame.getContentPane());
+		
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			
+			TrainModelMerger trainModelMerger = new TrainModelMerger(fc.getSelectedFiles(),
+					mainFrame.getTextAreaStatus(), 
+					mainFrame.getTableTrainModel(),
+					mainController);
+			trainModelMerger.execute();
+			
+		}
+		
 	}
 	
 }

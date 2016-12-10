@@ -1,6 +1,5 @@
 package worker;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,74 +13,62 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.MainController;
 import model.WordModel;
-import process.TextReader;
+import process.CSVIO;
 
-public class StatusUpdater extends SwingWorker<Map<WordModel, Integer>, String> {
-
-	private File[] files;
+public class TrainModelLoader extends SwingWorker<Map<WordModel, Integer>, String> {
+	
+	private String filepath;
 	private JTextArea textArea;
 	private JTable table;
 	private MainController mainController;
-
-	public StatusUpdater(File[] files, JTextArea textArea, JTable table, MainController mainController) {
-		this.files = files;
+	
+	public TrainModelLoader(String filepath, 
+			JTextArea textArea, 
+			JTable table, 
+			MainController mainController) {
+		
+		this.filepath = filepath;
 		this.textArea = textArea;
 		this.table = table;
 		this.mainController = mainController;
 	}
-
+	
 	@Override
 	protected Map<WordModel, Integer> doInBackground() throws Exception {
-		Map<WordModel, Integer> tally = new HashMap<WordModel, Integer>();
-		int len = files.length;
-		for (int i = 0; i < len; i++) {
-			ArrayList<String> texts = TextReader.read(files[i].getAbsolutePath());
+		
+		Map<WordModel, Integer> bagOfWordsModel = new HashMap<WordModel, Integer>();
+		ArrayList<String> input = CSVIO.read(filepath);
+		
+		publish("\nLoading Train Model from " + filepath.substring(filepath.lastIndexOf("\\") + 1));
+		
+		for(String string : input) {
 			
-			String tag = new String("Not Spam");
-			if(files[i].getName().contains("spmsg")) {
-				tag = "Spam";
-			}
-			for (String text : texts) {
-				String s = text.replaceAll("[^a-zA-Z\\s]", "").replaceAll("\\s+", " ");
-
-				String[] temp = s.split(" ");
-				for (int j = 0; j < temp.length; j++) {
-
-					WordModel word = new WordModel(temp[j], tag);
-
-					if (!tally.containsKey(word) && !temp[j].isEmpty()) {
-						tally.put(word, new Integer(1));
-					}
-
-					else if (!temp[j].isEmpty()) {
-						tally.replace(word, tally.get(word), tally.get(word) + 1);
-					}
-				}
-			}
-			publish(files[i].getName());
+			String[] temp = string.split(",");
+			bagOfWordsModel.put(new WordModel(temp[0], temp[1]), Integer.parseInt(temp[2]));
+			
 		}
-
-		return tally;
+		
+		return bagOfWordsModel;
 	}
-
+	
 	@Override
 	protected void process(List<String> chunks) {
 		for (String chunk : chunks) {
-			textArea.append("\nOpening " + chunk);
+			textArea.append(chunk);
 		}
 		textArea.repaint();
 		textArea.revalidate();
 	}
-
+	
 	@Override
 	protected void done() {
-
+		
 		try {
-			mainController.getBagOfWordsModel().putAll(get());
+			mainController.setBagOfWordsModel(get());
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-
+		
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		tableModel.setRowCount(0);
 
@@ -98,6 +85,10 @@ public class StatusUpdater extends SwingWorker<Map<WordModel, Integer>, String> 
 
 		table.repaint();
 		table.revalidate();
-
+		
+		textArea.append("\nTrain Model loaded from " + filepath.substring(filepath.lastIndexOf("\\") + 1) + " with " + lenKey + " words.\n");
+		textArea.repaint();
+		textArea.revalidate();
 	}
+	
 }

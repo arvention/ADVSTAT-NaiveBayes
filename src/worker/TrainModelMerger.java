@@ -15,8 +15,6 @@ import javax.swing.table.DefaultTableModel;
 import controller.MainController;
 import fileio.CSVIO;
 import model.WordModel;
-import process.TallyMerger;
-import process.TallyRetriever;
 
 public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, String> {
 	
@@ -40,7 +38,7 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 	@Override
 	protected Map<WordModel, Integer> doInBackground() throws Exception {
 		
-		Map<WordModel, Integer> tallyFinal = new HashMap<WordModel, Integer>();
+		Map<WordModel, Integer> tally = new HashMap<WordModel, Integer>();
 		
 		mainController.setSpamTrainCount(0);
 		mainController.setNotSpamTrainCount(0);
@@ -56,12 +54,25 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 			mainController.setSpamTrainCount(mainController.getSpamTrainCount() + Integer.parseInt(temp[1]));
 			mainController.setNotSpamTrainCount(mainController.getNotSpamTrainCount() + Integer.parseInt(temp[2]));
 			
-			Map<WordModel, Integer> tally = TallyRetriever.retrieveTally(input);
-			tallyFinal = TallyMerger.mergeTally(tallyFinal, tally);
+			for(String s : input) {
+				
+				temp = s.split(",");
+				WordModel word = new WordModel(temp[0], temp[1]);
+				
+				if(!tally.containsKey(word)) {
+					tally.put(word, Integer.parseInt(temp[2]));
+				} else {
+					tally.replace(word, tally.get(word), tally.get(word) + Integer.parseInt(temp[2]));
+				}
+				
+			}
+			
+			// Map<WordModel, Integer> tally = TallyRetriever.retrieveTally(input);
+			// tallyFinal = TallyMerger.mergeTally(tallyFinal, tally);
 			
 		}
 		
-		return tallyFinal;
+		return tally;
 		
 	}
 	

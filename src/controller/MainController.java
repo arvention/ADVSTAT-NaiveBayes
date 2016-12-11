@@ -25,13 +25,15 @@ public class MainController {
 	private int notSpamTrainCount;
 	
 	private ArrayList<FileModel> testFiles;
-
+	ArrayList<String> wordList;
+	
 	public MainController(MainFrame mainFrame) {
 		bagOfWordsModel = new HashMap<WordModel, Integer>();
 		spamTrainCount = 0;
 		notSpamTrainCount = 0;
 		
 		testFiles = new ArrayList<FileModel>();
+		wordList = new ArrayList<String>();
 		
 		this.mainFrame = mainFrame;
 		mainFrame.setVisible(true);
@@ -77,6 +79,20 @@ public class MainController {
 	
 	public void setTestFiles(ArrayList<FileModel> testFiles) {
 		this.testFiles = testFiles;
+	}
+	
+	public ArrayList<String> getWordList() {
+		return wordList;
+	}
+	
+	public void addWord(String word) {
+		if(!this.wordList.contains(word)) {
+			this.wordList.add(word);
+		}
+	}
+	
+	public void setWordList(ArrayList<String> wordList) {
+		this.wordList = wordList;
 	}
 
 }

@@ -63,6 +63,7 @@ public class TrainModelSaver extends SwingWorker<Void, String> {
 		
 		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
 		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		System.out.println("WORD LIST COUNT: " + mainController.getWordList().size());
 		
 	}
 }

@@ -57,11 +57,15 @@ public class TrainModelLoader extends SwingWorker<Map<WordModel, Integer>, Strin
 		mainController.setSpamTrainCount(Integer.parseInt(temp[1]));
 		mainController.setNotSpamTrainCount(Integer.parseInt(temp[2]));
 		
+		mainController.setWordList(new ArrayList<String>());
+		
 		for(String line : input) {
 			
 			temp = line.split(",");
 			publish(temp);
 			bagOfWordsModel.put(new WordModel(temp[0], temp[1]), Integer.parseInt(temp[2]));
+			mainController.addWord(temp[0]);
+			
 		}
 		
 		return bagOfWordsModel;
@@ -97,6 +101,7 @@ public class TrainModelLoader extends SwingWorker<Map<WordModel, Integer>, Strin
 		
 		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
 		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		System.out.println("WORD LIST COUNT: " + mainController.getWordList().size());
 		
 	}
 	

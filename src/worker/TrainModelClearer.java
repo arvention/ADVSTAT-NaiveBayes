@@ -1,5 +1,6 @@
 package worker;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,8 @@ public class TrainModelClearer extends SwingWorker<Map<WordModel, Integer>, Stri
 			e.printStackTrace();
 		}
 		
+		mainController.setWordList(new ArrayList<String>());
+		
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		tableModel.setRowCount(0);
 		/*
@@ -79,6 +82,7 @@ public class TrainModelClearer extends SwingWorker<Map<WordModel, Integer>, Stri
 		
 		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
 		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		System.out.println("WORD LIST COUNT: " + mainController.getWordList().size());
 		
 	}
 

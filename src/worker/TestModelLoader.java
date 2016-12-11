@@ -64,6 +64,7 @@ public class TestModelLoader extends SwingWorker<ArrayList<FileModel>, String> {
 	
 	@Override
 	protected void process(List<String> chunks) {
+		
 		for (String chunk : chunks) {
 			textArea.append(chunk);
 		}

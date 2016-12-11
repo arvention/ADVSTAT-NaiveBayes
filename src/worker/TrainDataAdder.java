@@ -69,6 +69,9 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 					else if (!temp[j].isEmpty()) {
 						tally.replace(word, tally.get(word), tally.get(word) + 1);
 					}
+					
+					mainController.addWord(word.getWord());
+					
 				}
 			}
 			
@@ -127,6 +130,7 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 		
 		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
 		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		System.out.println("WORD LIST COUNT: " + mainController.getWordList().size());
 		
 	}
 }

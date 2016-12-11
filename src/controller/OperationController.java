@@ -9,6 +9,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import view.MainFrame;
+import worker.Evaluator;
 import worker.TestDataAdder;
 import worker.TestModelClearer;
 import worker.TestModelLoader;
@@ -131,7 +132,7 @@ public class OperationController {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				evaluate();
 			}
 			
 		});
@@ -406,7 +407,7 @@ public class OperationController {
 			
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				evaluate();
 			}
 
 			@Override
@@ -612,6 +613,14 @@ public class OperationController {
 			testModelMerger.execute();
 			
 		}
+		
+	}
+	
+	private void evaluate() {
+		
+		Evaluator evaluator = new Evaluator(mainFrame.getTextAreaEvaluation(), 
+				mainController);
+		evaluator.execute();
 		
 	}
 	

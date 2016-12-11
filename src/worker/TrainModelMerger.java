@@ -15,8 +15,6 @@ import javax.swing.table.DefaultTableModel;
 import controller.MainController;
 import fileio.CSVIO;
 import model.WordModel;
-import process.TallyMerger;
-import process.TallyRetriever;
 
 public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, String> {
 	
@@ -55,7 +53,9 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 			String[] temp = input.remove(len - 1).split(",");
 			mainController.setSpamTrainCount(mainController.getSpamTrainCount() + Integer.parseInt(temp[1]));
 			mainController.setNotSpamTrainCount(mainController.getNotSpamTrainCount() + Integer.parseInt(temp[2]));
-			/*
+			
+			mainController.setWordList(new ArrayList<String>());
+			
 			for(String s : input) {
 				
 				temp = s.split(",");
@@ -67,10 +67,12 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 					tallyFinal.replace(word, tallyFinal.get(word), tallyFinal.get(word) + Integer.parseInt(temp[2]));
 				}
 				
+				mainController.addWord(word.getWord());
+				
 			}
-			*/
-			Map<WordModel, Integer> tally = TallyRetriever.retrieveTally(input);
-			tallyFinal = TallyMerger.mergeTally(tallyFinal, tally);
+			
+			// Map<WordModel, Integer> tally = TallyRetriever.retrieveTally(input);
+			// tallyFinal = TallyMerger.mergeTally(tallyFinal, tally);
 			
 		}
 		
@@ -119,6 +121,7 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 		
 		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
 		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		System.out.println("WORD LIST COUNT: " + mainController.getWordList().size());
 		
 	}
 	

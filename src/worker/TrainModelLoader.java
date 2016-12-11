@@ -14,9 +14,8 @@ import javax.swing.table.DefaultTableModel;
 import controller.MainController;
 import fileio.CSVIO;
 import model.WordModel;
-import process.TallyRetriever;
 
-public class TrainModelLoader extends SwingWorker<Map<WordModel, Integer>, String> {
+public class TrainModelLoader extends SwingWorker<Map<WordModel, Integer>, String[]> {
 	
 	private String filepath;
 	private JTextArea textArea;
@@ -32,6 +31,18 @@ public class TrainModelLoader extends SwingWorker<Map<WordModel, Integer>, Strin
 		this.textArea = textArea;
 		this.table = table;
 		this.mainController = mainController;
+		
+		showStart();
+		
+	}
+	
+	private void showStart() {
+		
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		tableModel.setRowCount(0);
+		
+		textArea.append("\nLoading Train Model from " + filepath.substring(filepath.lastIndexOf("\\") + 1));
+		
 	}
 	
 	@Override
@@ -40,25 +51,33 @@ public class TrainModelLoader extends SwingWorker<Map<WordModel, Integer>, Strin
 		Map<WordModel, Integer> bagOfWordsModel = new HashMap<WordModel, Integer>();
 		ArrayList<String> input = CSVIO.read(filepath);
 		
-		publish("\nLoading Train Model from " + filepath.substring(filepath.lastIndexOf("\\") + 1));
 		int len = input.size();
 		
 		String[] temp = input.remove(len - 1).split(",");
 		mainController.setSpamTrainCount(Integer.parseInt(temp[1]));
 		mainController.setNotSpamTrainCount(Integer.parseInt(temp[2]));
 		
-		bagOfWordsModel = TallyRetriever.retrieveTally(input);
+		for(String line : input) {
+			
+			temp = line.split(",");
+			publish(temp);
+			bagOfWordsModel.put(new WordModel(temp[0], temp[1]), Integer.parseInt(temp[2]));
+		}
 		
 		return bagOfWordsModel;
 	}
 	
 	@Override
-	protected void process(List<String> chunks) {
-		for (String chunk : chunks) {
-			textArea.append(chunk);
+	protected void process(List<String[]> chunks) {
+		
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		
+		for (String[] chunk : chunks) {
+			tableModel.addRow(new Object[] { chunk[0], chunk[1],
+					chunk[2] });
 		}
-		textArea.repaint();
-		textArea.revalidate();
+		table.repaint();
+		table.revalidate();
 	}
 	
 	@Override
@@ -70,22 +89,7 @@ public class TrainModelLoader extends SwingWorker<Map<WordModel, Integer>, Strin
 			e.printStackTrace();
 		}
 		
-		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-		tableModel.setRowCount(0);
-
 		int lenKey = mainController.getBagOfWordsModel().keySet().size();
-
-		for (int j = 0; j < lenKey; j++) {
-			
-			WordModel word = (WordModel)mainController.getBagOfWordsModel().keySet().toArray()[j];
-			
-			tableModel.addRow(new Object[] { word.getWord(), word.getTag(),
-					mainController.getBagOfWordsModel().values().toArray()[j] });
-
-		}
-
-		table.repaint();
-		table.revalidate();
 		
 		textArea.append("\nTrain Model loaded from " + filepath.substring(filepath.lastIndexOf("\\") + 1) + " with " + lenKey + " words.\n");
 		textArea.repaint();

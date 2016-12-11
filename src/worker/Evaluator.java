@@ -6,7 +6,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
 import controller.MainController;
-import process.VocabCounter;
 
 
 public class Evaluator extends SwingWorker<Void, String> {
@@ -15,6 +14,8 @@ public class Evaluator extends SwingWorker<Void, String> {
 	private MainController mainController;
 	
 	private int wordCount;
+	private int spamCount;
+	private int notSpamCount;
 	
 	public Evaluator(JTextArea textArea,
 			MainController mainController) {
@@ -22,7 +23,9 @@ public class Evaluator extends SwingWorker<Void, String> {
 		this.textArea = textArea;
 		this.mainController = mainController;
 		
-		wordCount = 0;
+		wordCount = mainController.getWordList().size();
+		spamCount = mainController.getSpamTrainCount();
+		notSpamCount = mainController.getNotSpamTrainCount();
 		
 		showStart();
 		
@@ -39,7 +42,8 @@ public class Evaluator extends SwingWorker<Void, String> {
 	@Override
 	protected Void doInBackground() throws Exception {
 		
-		wordCount = mainController.getWordList().size();
+		System.out.println("SPAM COUNT: " + spamCount);
+		System.out.println("NOT SPAM COUNT: " + notSpamCount);
 		System.out.println("WORD COUNT: " + wordCount);
 		
 		return null;

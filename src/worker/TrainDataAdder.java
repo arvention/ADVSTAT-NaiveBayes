@@ -15,7 +15,6 @@ import javax.swing.table.DefaultTableModel;
 import controller.MainController;
 import fileio.TextReader;
 import model.WordModel;
-import process.TallyMaker;
 import process.TallyMerger;
 
 public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String> {
@@ -39,8 +38,8 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 	@Override
 	protected Map<WordModel, Integer> doInBackground() throws Exception {
 		
-		Map<WordModel, Integer> tallyFinal = new HashMap<WordModel, Integer>();
-		
+		//Map<WordModel, Integer> tallyFinal = new HashMap<WordModel, Integer>();
+		Map<WordModel, Integer> tally = new HashMap<WordModel, Integer>();
 		int spamTrainCount = 0;
 		int notSpamTrainCount = 0;
 		
@@ -55,8 +54,23 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 				notSpamTrainCount++;
 			}
 			
-			Map<WordModel, Integer> tally = TallyMaker.makeTally(texts, tag);
-			tallyFinal = TallyMerger.mergeTally(tallyFinal, tally);
+			for (String text : texts) {
+				String s = text.replaceAll("[^a-zA-Z\\s]", "").replaceAll("\\s+", " ");
+
+				String[] temp = s.split(" ");
+				for (int j = 0; j < temp.length; j++) {
+
+					WordModel word = new WordModel(temp[j], tag);
+
+					if (!tally.containsKey(word) && !temp[j].isEmpty()) {
+						tally.put(word, new Integer(1));
+					}
+
+					else if (!temp[j].isEmpty()) {
+						tally.replace(word, tally.get(word), tally.get(word) + 1);
+					}
+				}
+			}
 			
 			publish(file.getName());
 		}
@@ -64,7 +78,7 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 		mainController.setSpamTrainCount(mainController.getSpamTrainCount() + spamTrainCount);
 		mainController.setNotSpamTrainCount(mainController.getNotSpamTrainCount() + notSpamTrainCount);
 		
-		return tallyFinal;
+		return tally;
 		
 	}
 

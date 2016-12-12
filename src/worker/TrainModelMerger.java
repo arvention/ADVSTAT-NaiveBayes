@@ -40,8 +40,13 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 		
 		Map<WordModel, Integer> tallyFinal = new HashMap<WordModel, Integer>();
 		
-		mainController.setSpamTrainCount(0);
-		mainController.setNotSpamTrainCount(0);
+		mainController.setSpamWordTrainCount(0);
+		mainController.setNotSpamWordTrainCount(0);
+		
+		mainController.setSpamDocTrainCount(0);
+		mainController.setNotSpamDocTrainCount(0);
+		
+		mainController.setWordList(new ArrayList<String>());
 		
 		for(File file : files) {
 			
@@ -51,10 +56,13 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 			int len = input.size();
 			
 			String[] temp = input.remove(len - 1).split(",");
-			mainController.setSpamTrainCount(mainController.getSpamTrainCount() + Integer.parseInt(temp[1]));
-			mainController.setNotSpamTrainCount(mainController.getNotSpamTrainCount() + Integer.parseInt(temp[2]));
+			mainController.setSpamWordTrainCount(mainController.getSpamWordTrainCount() + Integer.parseInt(temp[1]));
+			mainController.setNotSpamWordTrainCount(mainController.getNotSpamWordTrainCount() + Integer.parseInt(temp[2]));
 			
-			mainController.setWordList(new ArrayList<String>());
+			len = input.size();
+			temp = input.remove(len - 1).split(",");
+			mainController.setSpamDocTrainCount(mainController.getSpamDocTrainCount() + Integer.parseInt(temp[1]));
+			mainController.setNotSpamDocTrainCount(mainController.getNotSpamDocTrainCount() + Integer.parseInt(temp[2]));
 			
 			for(String s : input) {
 				
@@ -100,9 +108,9 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 		
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		tableModel.setRowCount(0);
-
+		/*
 		int lenKey = mainController.getBagOfWordsModel().keySet().size();
-
+		
 		for (int j = 0; j < lenKey; j++) {
 			
 			WordModel word = (WordModel)mainController.getBagOfWordsModel().keySet().toArray()[j];
@@ -111,7 +119,7 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 					mainController.getBagOfWordsModel().values().toArray()[j] });
 
 		}
-
+		*/
 		table.repaint();
 		table.revalidate();
 		
@@ -119,8 +127,10 @@ public class TrainModelMerger extends SwingWorker<Map<WordModel, Integer>, Strin
 		textArea.repaint();
 		textArea.revalidate();
 		
-		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
-		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		System.out.println("SPAM DOC COUNT: " + mainController.getSpamDocTrainCount());
+		System.out.println("NOT SPAM DOC COUNT: " + mainController.getNotSpamDocTrainCount());
+		System.out.println("SPAM WORD COUNT: " + mainController.getSpamWordTrainCount());
+		System.out.println("NOT SPAM WORD COUNT: " + mainController.getNotSpamWordTrainCount());
 		System.out.println("WORD LIST COUNT: " + mainController.getWordList().size());
 		
 	}

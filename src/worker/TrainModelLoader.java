@@ -54,8 +54,14 @@ public class TrainModelLoader extends SwingWorker<Map<WordModel, Integer>, Strin
 		int len = input.size();
 		
 		String[] temp = input.remove(len - 1).split(",");
-		mainController.setSpamTrainCount(Integer.parseInt(temp[1]));
-		mainController.setNotSpamTrainCount(Integer.parseInt(temp[2]));
+		mainController.setSpamWordTrainCount(Integer.parseInt(temp[1]));
+		mainController.setNotSpamWordTrainCount(Integer.parseInt(temp[2]));
+		
+		len = input.size();
+		
+		temp = input.remove(len - 1).split(",");
+		mainController.setSpamDocTrainCount(Integer.parseInt(temp[1]));
+		mainController.setNotSpamDocTrainCount(Integer.parseInt(temp[2]));
 		
 		mainController.setWordList(new ArrayList<String>());
 		
@@ -99,8 +105,10 @@ public class TrainModelLoader extends SwingWorker<Map<WordModel, Integer>, Strin
 		textArea.repaint();
 		textArea.revalidate();
 		
-		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
-		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		System.out.println("SPAM DOC COUNT: " + mainController.getSpamDocTrainCount());
+		System.out.println("NOT SPAM DOC COUNT: " + mainController.getNotSpamDocTrainCount());
+		System.out.println("SPAM WORD COUNT: " + mainController.getSpamWordTrainCount());
+		System.out.println("NOT SPAM WORD COUNT: " + mainController.getNotSpamWordTrainCount());
 		System.out.println("WORD LIST COUNT: " + mainController.getWordList().size());
 		
 	}

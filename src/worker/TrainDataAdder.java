@@ -40,8 +40,11 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 		
 		//Map<WordModel, Integer> tallyFinal = new HashMap<WordModel, Integer>();
 		Map<WordModel, Integer> tally = new HashMap<WordModel, Integer>();
-		int spamTrainCount = 0;
-		int notSpamTrainCount = 0;
+		int spamDocTrainCount = 0;
+		int notSpamDocTrainCount = 0;
+		
+		int spamWordTrainCount = 0;
+		int notSpamWordTrainCount = 0;
 		
 		for (File file : files) {
 			ArrayList<String> texts = TextReader.read(file.getAbsolutePath());
@@ -49,9 +52,9 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 			String tag = new String("Not Spam");
 			if(file.getName().contains("spmsg")) {
 				tag = "Spam";
-				spamTrainCount++;
+				spamDocTrainCount++;
 			} else {
-				notSpamTrainCount++;
+				notSpamDocTrainCount++;
 			}
 			
 			for (String text : texts) {
@@ -61,7 +64,12 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 				for (int j = 0; j < temp.length; j++) {
 
 					WordModel word = new WordModel(temp[j], tag);
-
+					
+					if(tag == "Spam" && !temp[j].isEmpty())
+						spamWordTrainCount++;
+					else if (!temp[j].isEmpty())
+						notSpamWordTrainCount++;
+					
 					if (!tally.containsKey(word) && !temp[j].isEmpty()) {
 						tally.put(word, new Integer(1));
 					}
@@ -78,8 +86,11 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 			publish(file.getName());
 		}
 		
-		mainController.setSpamTrainCount(mainController.getSpamTrainCount() + spamTrainCount);
-		mainController.setNotSpamTrainCount(mainController.getNotSpamTrainCount() + notSpamTrainCount);
+		mainController.setSpamDocTrainCount(mainController.getSpamDocTrainCount() + spamDocTrainCount);
+		mainController.setNotSpamDocTrainCount(mainController.getNotSpamDocTrainCount() + notSpamDocTrainCount);
+		
+		mainController.setSpamWordTrainCount(mainController.getSpamWordTrainCount() + spamWordTrainCount);
+		mainController.setNotSpamWordTrainCount(mainController.getNotSpamWordTrainCount() + notSpamWordTrainCount);
 		
 		return tally;
 		
@@ -128,8 +139,10 @@ public class TrainDataAdder extends SwingWorker<Map<WordModel, Integer>, String>
 		table.repaint();
 		table.revalidate();
 		
-		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
-		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		System.out.println("SPAM DOC COUNT: " + mainController.getSpamDocTrainCount());
+		System.out.println("NOT SPAM DOC COUNT: " + mainController.getNotSpamDocTrainCount());
+		System.out.println("SPAM WORD COUNT: " + mainController.getSpamWordTrainCount());
+		System.out.println("NOT SPAM WORD COUNT: " + mainController.getNotSpamWordTrainCount());
 		System.out.println("WORD LIST COUNT: " + mainController.getWordList().size());
 		
 	}

@@ -21,16 +21,19 @@ public class MainController {
 	public static final Cursor CURSOR_INACTIVE = new Cursor(Cursor.DEFAULT_CURSOR);
 
 	private Map<WordModel, Integer> bagOfWordsModel;
-	private int spamTrainCount;
-	private int notSpamTrainCount;
+	private int spamDocTrainCount;
+	private int notSpamDocTrainCount;
+	
+	private int spamWordTrainCount;
+	private int notSpamWordTrainCount;
 	
 	private ArrayList<FileModel> testFiles;
 	ArrayList<String> wordList;
 	
 	public MainController(MainFrame mainFrame) {
 		bagOfWordsModel = new HashMap<WordModel, Integer>();
-		spamTrainCount = 0;
-		notSpamTrainCount = 0;
+		spamDocTrainCount = 0;
+		notSpamDocTrainCount = 0;
 		
 		testFiles = new ArrayList<FileModel>();
 		wordList = new ArrayList<String>();
@@ -51,22 +54,38 @@ public class MainController {
 		this.bagOfWordsModel = bagOfWordsModel;
 	}
 
-	public int getSpamTrainCount() {
-		return spamTrainCount;
+	public int getSpamDocTrainCount() {
+		return spamDocTrainCount;
 	}
 
-	public void setSpamTrainCount(int spamTrainCount) {
-		this.spamTrainCount = spamTrainCount;
+	public void setSpamDocTrainCount(int spamDocTrainCount) {
+		this.spamDocTrainCount = spamDocTrainCount;
 	}
 
-	public int getNotSpamTrainCount() {
-		return notSpamTrainCount;
+	public int getNotSpamDocTrainCount() {
+		return notSpamDocTrainCount;
 	}
 
-	public void setNotSpamTrainCount(int notSpamTrainCount) {
-		this.notSpamTrainCount = notSpamTrainCount;
+	public void setNotSpamDocTrainCount(int notSpamDocTrainCount) {
+		this.notSpamDocTrainCount = notSpamDocTrainCount;
 	}
 	
+	public int getSpamWordTrainCount() {
+		return spamWordTrainCount;
+	}
+
+	public void setSpamWordTrainCount(int spamWordTrainCount) {
+		this.spamWordTrainCount = spamWordTrainCount;
+	}
+
+	public int getNotSpamWordTrainCount() {
+		return notSpamWordTrainCount;
+	}
+
+	public void setNotSpamWordTrainCount(int notSpamWordTrainCount) {
+		this.notSpamWordTrainCount = notSpamWordTrainCount;
+	}
+
 	public ArrayList<FileModel> getTestFiles() {
 		return testFiles;
 	}

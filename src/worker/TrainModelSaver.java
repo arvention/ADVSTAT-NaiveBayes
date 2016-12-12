@@ -37,7 +37,8 @@ public class TrainModelSaver extends SwingWorker<Void, String> {
 		for(WordModel word : trainModelMap.keySet()) {
 			output.add(word.getWord() + "," + word.getTag() + "," + trainModelMap.get(word));
 		}
-		output.add("DOCCOUNT," + mainController.getSpamTrainCount() + "," + mainController.getNotSpamTrainCount());
+		output.add("DOCCOUNT," + mainController.getSpamDocTrainCount() + "," + mainController.getNotSpamDocTrainCount());
+		output.add("WORDCOUNT," + mainController.getSpamWordTrainCount() + "," + mainController.getNotSpamWordTrainCount());
 		CSVIO.write(output, filepath);
 		
 		return null;
@@ -61,8 +62,10 @@ public class TrainModelSaver extends SwingWorker<Void, String> {
 		textArea.repaint();
 		textArea.revalidate();
 		
-		System.out.println("SPAM COUNT: " + mainController.getSpamTrainCount());
-		System.out.println("NOT SPAM COUNT: " + mainController.getNotSpamTrainCount());
+		System.out.println("SPAM DOC COUNT: " + mainController.getSpamDocTrainCount());
+		System.out.println("NOT SPAM DOC COUNT: " + mainController.getNotSpamDocTrainCount());
+		System.out.println("SPAM WORD COUNT: " + mainController.getSpamWordTrainCount());
+		System.out.println("NOT SPAM WORD COUNT: " + mainController.getNotSpamWordTrainCount());
 		System.out.println("WORD LIST COUNT: " + mainController.getWordList().size());
 		
 	}
